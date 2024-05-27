@@ -39,27 +39,135 @@
     // Array.prototype.filter()
     // 1. Filter the list of inventors for those who were born in the 1500's
 
+    const fifteen = inventors.filter(function (inventor) {
+      if (inventor.year > 1499 && inventor.year < 1600) {
+        return true;
+      }
+    });
+
+    //  Note that the above can be replaced with:
+    //  const fifteen = inventors.filter(inventor => intevtor.year > 1499 && inventor.year <1600); 
+    // However, it is important to understand where this shorthand comes from and what the fuction is actually doing.
+
+    console.table(fifteen); 
+
     // Array.prototype.map()
     // 2. Give us an array of the inventors first and last names
+
+    const fullNames = inventors.map(inventor => inventor.first + " " + inventor.last);
+
+    console.log(fullNames)
 
     // Array.prototype.sort()
     // 3. Sort the inventors by birthdate, oldest to youngest
 
+    const ordered = inventors.sort(function (firstPerson, secondPerson) {
+      if (firstPerson.year > secondPerson.year) {
+        return 1;
+      } else {
+        return -1
+      };
+    })
+
+    // Again, this can be significantly shortened into:
+    // const ordered = inventors.sort ((a,b) => a.year > b.year ? 1 : -1);
+
+    console.table(ordered);
+
     // Array.prototype.reduce()
     // 4. How many years did all the inventors live all together?
 
+    // The traditional approach to this problem is as follows:
+    // var totalYears = 0;
+    // for (var i = 0; i < inventors.length; i++) {
+      // totalYears += inventors[i].passed - inventors[i].year
+    // }
+
+  // However .reduce replaces all that.
+
+const totalYears = inventors.reduce((total, inventor) => {return total + (inventor.passed - inventor.year);
+  }, 0);
+// The final '0' sets the starting value of total to zero. Otherwise the result is indefined.
+
+    console.log(totalYears);
+
     // 5. Sort the inventors by years lived
+
+    const oldest = inventors.sort (function(a,b) {
+      const lastGuy = a.passed - a.year;
+      const nextGuy = b.passed - b.year;
+      if (lastGuy > nextGuy) {
+        return - 1;
+      } else {
+        return 1
+      }
+    });
+
+    // Can replace if statement with
+    // return lastGuy > nextGuy ? -1 : 1;
+
+    console.table(oldest);
 
     // 6. create a list of Boulevards in Paris that contain 'de' anywhere in the name
     // https://en.wikipedia.org/wiki/Category:Boulevards_in_Paris
+
+    // This is a super cool example. You cannot run this here, because the data is elsewhere. You must instead run this in the dev tools of the linked page!
+
+    // const category = document.querySelector(".mw-category");
+    
+    // The class comes from inspecting the links and finding the class associated with teh containing element.
+
+    // const links = Array.from(category.querySelectorAll("a"));
+
+    // You can call querySelector on ANY DOM element, and so we will look for links (a refs) inside our container.
+
+    // While NodeLists have many overlapping fuctions with true arrays, .map is not one of them. Thus the extra code to turn into an array. Alternatively, the spread selector ould be used, but it's less reader friendly for a nood like me.
+
+    // const links = [...category.querySelectorAll("a")];
+
+    // const de = links.map(link => link.textContent);
+// 
+    // const deFilter = de.filter(streetName => streetName.includes("de"));
+
+    // You can combine the last two steps as follows:
+
+    // const de = links.map(link => link.textContent).filter (streetName => streetName.includes("de"));
+
+    // written more neatly as:
+
+    // const de = links
+      // .map(link => link.textContent)
+      // .filter (streetName => streetName.includes("de"));
 
 
     // 7. sort Exercise
     // Sort the people alphabetically by last name
 
+    const alpha = people.sort(function(lastOne, nextOne){
+      const [alast, afirst] = lastOne.split(", ");
+      const [blast, bfirst] = nextOne.split(", ");
+      return alast > blast ? 1 : -1;
+    }) ;
+
+    console.log(alpha);
+
+    // I don't understand jumping through the extra hoops when the below actually gives us a morea ccurate list.
+
+    const beta = people.sort((a,b)=> a > b ? 1 : -1);
+    console.log(beta);
+
     // 8. Reduce Exercise
     // Sum up the instances of each of these
     const data = ['car', 'car', 'truck', 'truck', 'bike', 'walk', 'car', 'van', 'bike', 'walk', 'car', 'van', 'car', 'truck' ];
+
+    const transportation =  data.reduce(function(obj,item) {
+      if (!obj[item]) {
+        obj[item] =0;
+      }
+      obj[item]++;
+      return obj;
+    },{})
+console.log(transportation);
 
   </script>
 </body>
